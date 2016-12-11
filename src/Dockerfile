@@ -3,7 +3,6 @@ FROM python:2.7
 MAINTAINER Africlouds Ltd <arwema@africlouds.com>
 
 RUN apt-get update \
-&& apt-get install -y python-pip\
 && pip install flask requests\
 && pip install flask-httpauth\
 && pip install simplejson\

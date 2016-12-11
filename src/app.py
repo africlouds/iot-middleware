@@ -2,9 +2,11 @@ from flask import Flask, request, flash, url_for, redirect, render_template
 from flask.ext.jsonpify import jsonify
 from flask_sqlalchemy import SQLAlchemy
 import flask.ext.httpauth
+import os
+import requests
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///preferences.sqlite3'
 app.config['SECRET_KEY'] = "random string"
 auth = flask.ext.httpauth.HTTPBasicAuth()
 db = SQLAlchemy(app)
@@ -12,6 +14,7 @@ db = SQLAlchemy(app)
 users = {
     "admin": "admin"
 }
+GATEWAY = os.environ['GATEWAY']
 
 
 @auth.get_password
@@ -60,9 +63,11 @@ def manage_preferences(user=None):
 		pref.temperature = preference['temperature']
          	db.session.commit()
 		return "Update", 200
-		
-		
-		
+
+@app.route('/reading')
+@auth.login_required
+def get_readings():
+	return jsonify(requests.get(GATEWAY+'/reading', auth=('admin', 'admin')).json())
 		
 
 
