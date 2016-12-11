@@ -1,0 +1,6 @@
+flask:
+   build: ./src/
+   command: python /src/app.py
+   volumes:
+         - ./src:/src
+         - /etc/localtime:/etc/localtime:ro

@@ -1,0 +1,5 @@
+flask:
+   restart: always
+   image: middleware_flask
+   ports:
+        - "5000:5000"
