@@ -1,11 +1,12 @@
 flask:
-   build: ./src/
-   command: python /src/app.py
+   restart: always
+   image: middleware_flask
    ports:
-         - "5000:5000"
+        - "5000:5000"
    volumes:
          - ./src:/src
          - /etc/localtime:/etc/localtime:ro
    environment:
          - GATEWAY=http://172.17.0.1:5001
-         
+
+

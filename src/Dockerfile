@@ -1,4 +1,5 @@
-FROM python:2.7
+FROM resin/raspberrypi-python:2.7
+#FROM python:2.7
 
 MAINTAINER Africlouds Ltd <arwema@africlouds.com>
 
