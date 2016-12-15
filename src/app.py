@@ -42,27 +42,21 @@ def manage_preferences(user=None):
 	if request.method == 'POST':
 		preference = request.get_json(force=True)
 		pref = get_preference(preference['user']) 
+		code = None
 		if pref:
-			return "Arleady exists", 403
-		preference = Preference(preference['user'], preference['temperature'])
-		db.session.add(preference)
+			pref.temperature = preference['temperature']
+			code = 200
+		else:
+			preference = Preference(preference['user'], preference['temperature'])
+			db.session.add(preference)
+			code = 201
          	db.session.commit()
-		return preference.user, 200
+		return "", code 
 	elif request.method == 'GET' and user:
 		pref = get_preference(user) 
 		if not pref: 
 			return "Not found", 404
-		return jsonify({'temperature':pref.temperature})
-	elif request.method == 'PUT' and user:
-		preference = request.get_json(force=True)
-		pref = get_preference(user) 
-		if not pref: 
-			return "Not found", 404
-		if 'temperature' not in preference:
-			return "bad request", 400
-		pref.temperature = preference['temperature']
-         	db.session.commit()
-		return "Update", 200
+		return jsonify({'user':pref.user,'temperature':pref.temperature})
 
 @app.route('/reading')
 @auth.login_required
