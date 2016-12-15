@@ -63,7 +63,10 @@ def manage_preferences(user=None):
 def get_readings():
 	return jsonify(requests.get(GATEWAY+'/reading', auth=('admin', 'admin')).json())
 		
-
+@app.route('/command/<string:command>')
+@auth.login_required
+def post_command(command):
+	return jsonify(requests.get(GATEWAY+'/command/%s' % command, auth=('admin', 'admin')).json())
 
 @app.route('/')
 @auth.login_required
